@@ -20,42 +20,38 @@ grammar Porkchop
   end
     
   rule expression
-    definition / string_literal / number_literal / list / table
+    definition / string / number / table / list / function_call
   end
-    
+  
   rule identifier
     [a-z_]+
   end
   
-  rule number_literal
+  rule number
     [\d]+
   end
-  
-  rule message
-    identifier block?
-  end
-  
-  rule arguments
-    list
-  end
-  
+    
   rule list
     '(' (expression ','? space)+ ')'
   end
 
   rule table
-    '(' (space definition end_of_line)+ ')'
+    '(' (space definition (end_of_line / ','? space))+ ')'
   end
   
   rule block
     '{' statements '}'
+  end
+  
+  rule function_call
+    identifier space list? block?
   end
 
   rule assignment_operator
     ':'
   end
 
-  rule string_literal
+  rule string
     single_quoted_string / double_quoted_string
   end
 
@@ -84,9 +80,6 @@ grammar Porkchop
   end
 
   rule comment_to_eol
-    # TODO find out why this doesn't work in specs
-    #'#' (!"\n" .)+ "\n"
-
     '#' (!"\n" .)*
   end
   

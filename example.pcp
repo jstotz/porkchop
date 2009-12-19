@@ -12,12 +12,21 @@ dinner: "Chr15m4s g0053!"
 cats: ('boris', 'dolly')
 
 # tables
-point: (
+place: (
   name: 'zeodrome'
-  x: 1
-  y: 2
-  z: 3
+  coordinates: (123, 456)
+  altitude: 5600
 )
+
+porcupine: (name: 'pancake', special_move: 'quill attack')
+
+# # functions
+# hello: {
+#   print 'hello'
+# }
+# 
+# hello
+# hello()
 
 # classes
 # Person: class (
