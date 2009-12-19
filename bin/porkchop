@@ -6,4 +6,6 @@ unless ARGV[0]
   exit(1)
 end
 
-Porkchop::Interpreter.new.eval_file(ARGV[0])
+require 'pp'
+
+pp Porkchop::Interpreter.new.eval_file(ARGV[0])
