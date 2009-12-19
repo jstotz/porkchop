@@ -1,0 +1,95 @@
+grammar Porkchop
+  rule program
+    statements end_of_file
+  end
+  
+  rule end_of_file
+    !.
+  end
+  
+  rule end_of_line
+    "\r\n" / "\n" / "\r"
+  end
+  
+  rule statements
+    statement+ / comment+
+  end
+  
+  rule statement
+    expression end_of_line
+  end
+  
+  rule variable_assignment
+    variable space assignment_operator space expression
+  end
+  
+  rule variable
+    identifier
+  end
+  
+  rule expression
+    variable_assignment / string_literal / number_literal #/ message / block
+  end
+  
+  rule comment
+   '#' (.*) end_of_line
+  end
+    
+  rule identifier
+    [a-z0-9_]+
+  end
+  
+  rule number_literal
+    [\d]+
+  end
+  
+  rule message
+    identifier block?
+  end
+  
+  rule arguments
+    list
+  end
+  
+  rule list
+    '(' (.*) ')'
+  end
+  
+  rule block
+    '{' statements '}'
+  end
+
+  rule assignment_operator
+    ':'
+  end
+
+  rule string_literal
+    single_quoted_string / double_quoted_string
+  end
+
+  rule double_quoted_string
+    '"' string:(!'"' ("\\\\" / '\"' / .))* '"' {
+      def eval(env = Environment.new)
+        string.text_value
+      end
+    }
+  end
+
+  rule single_quoted_string
+    "'" string:(!"'" ("\\\\" / "\\'" / .))* "'" {
+      def eval(env = Environment.new)
+        string.text_value
+      end
+    }
+  end
+  
+  # whitespace
+  rule white 
+    [ \r\t\n]+
+  end
+
+  # optional space
+  rule space
+    white?
+  end
+end

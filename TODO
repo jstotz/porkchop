@@ -1,0 +1,5 @@
+Stuff about which to think:
+
+* URL literals (inspired by: http://ozmm.org/posts/urls_in_ruby.html)
+* Stream-based parser
+* Callback-based parser
