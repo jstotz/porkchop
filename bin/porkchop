@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+require 'lib/interpreter'
+
+unless ARGV[0]
+  puts "Must specify source file path"
+  exit(1)
+end
+
+Porkchop::Interpreter.new.eval_file(ARGV[0])

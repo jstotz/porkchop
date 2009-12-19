@@ -1,10 +1,6 @@
 grammar Porkchop
   rule program
-    statements end_of_file
-  end
-  
-  rule end_of_file
-    !.
+    space statements space
   end
   
   rule end_of_line
@@ -12,11 +8,11 @@ grammar Porkchop
   end
   
   rule statements
-    statement+ / comment+
+    statement+
   end
   
   rule statement
-    expression end_of_line
+    expression end_of_line space
   end
   
   rule variable_assignment
@@ -28,15 +24,11 @@ grammar Porkchop
   end
   
   rule expression
-    variable_assignment / string_literal / number_literal #/ message / block
-  end
-  
-  rule comment
-   '#' (.*) end_of_line
+    variable_assignment / string_literal / number_literal / list
   end
     
   rule identifier
-    [a-z0-9_]+
+    [a-z_]+
   end
   
   rule number_literal
@@ -52,7 +44,7 @@ grammar Porkchop
   end
   
   rule list
-    '(' (.*) ')'
+    '(' (expression ','? space)+ ')'
   end
   
   rule block
@@ -83,13 +75,33 @@ grammar Porkchop
     }
   end
   
+  rule comment
+    comment_to_eol / multiline_comment
+  end
+
+  rule multiline_comment
+  '/*' (!'*/' . )* '*/'
+  end
+
+  rule comment_to_eol
+    # TODO find out why this doesn't work in specs
+    #'#' (!"\n" .)+ "\n"
+
+    '#' (!"\n" .)*
+  end
+  
   # whitespace
   rule white 
     [ \r\t\n]+
   end
 
+  # mandatory space
+  rule SPACE
+    (white / comment)+ 
+  end
+
   # optional space
   rule space
-    white?
+    SPACE?
   end
 end
