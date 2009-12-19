@@ -15,16 +15,12 @@ grammar Porkchop
     expression end_of_line space
   end
   
-  rule variable_assignment
-    variable space assignment_operator space expression
+  rule definition
+    identifier space ':' space expression
   end
-  
-  rule variable
-    identifier
-  end
-  
+    
   rule expression
-    variable_assignment / string_literal / number_literal / list
+    definition / string_literal / number_literal / list / table
   end
     
   rule identifier
@@ -45,6 +41,10 @@ grammar Porkchop
   
   rule list
     '(' (expression ','? space)+ ')'
+  end
+
+  rule table
+    '(' (space definition end_of_line)+ ')'
   end
   
   rule block
