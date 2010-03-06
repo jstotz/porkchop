@@ -1,11 +1,11 @@
-#!/usr/bin/env ruby
-require 'lib/interpreter'
+#!/usr/local/bin/ruby19
+require File.join(File.dirname(__FILE__), '..', 'lib', 'interpreter')
 
-unless ARGV[0]
-  puts "Must specify source file path"
+source_code = ARGF.read
+
+unless source_code.length > 0
+  puts "Must specify source file path or code on standard input"
   exit(1)
 end
 
-require 'pp'
-
-pp Porkchop::Interpreter.new.eval_file(ARGV[0])
+Porkchop::Interpreter.new.eval(source_code)
