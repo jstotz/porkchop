@@ -1,38 +1,112 @@
 # numbers
-x: 1
-y: 20
-z: 0
+0
+1
+-2
+3.14159265359
+-4.66666
 
 # strings
-breakfast: 'english muffin'
-lunch: "sandwich"
-dinner: "Chr15m4s g0053!"
+"sandwich"
+"Chr157m4s g0053!?#!@$!@$%%{}#@!#$^&)(*&^%$#@!~`)"
+
+# variable assignment
+x: "string"
+
+my_string: "string"
+zero: 0
+var_1: 1
+var_2: -2
+var_3: 3.14159265359
+var_4: -4.66666
 
 # lists
-cats: ('boris', 'dolly')
+cats: ["boris", "dolly"]
 
-# tables
-place: (
-  name: 'zeodrome'
-  coordinates: (123, 456)
+wingus: {
+  "blingus"; "springus"
+}
+
+dingus: {
+  "mingus"
+}
+
+place: {
+  name: "zeodrome"
+  coordinates: [123, 456]
   altitude: 5600
-)
+}
 
-porcupine: (name: 'pancake', special_move: 'quill attack')
+# -----
+# "objects"
+# a function's local scope is accessible from the outside
+# a "method" is simply a local variable whose value is a function
+porcupine: {
+  name: "Pancake"
+  special_move: "quill attack"
+  attack: {
+    print "#{name} deploys #{special_move}!"
+  }
+}
 
-# # functions
-# hello: {
-#   print 'hello'
+# porcupine.name
+# => "Pancake"
+
+# porcupine.attack
+# Pancake deploys quill attack!
+
+# automatic currying:
+# add: (x, y) {
+#   x + y
 # }
 # 
-# hello
-# hello()
-
-# classes
-# Person: class (
-#   first_name: attr
-#   last_name: attr
-#   full_name: {
-#     [first_name, ' ', last_name] join
-#   }
-# )
+# # calling a function with fewer than the required
+# # number of arguments returns a curried function.
+# # the following two definitions are equivalent.
+# add_10: (y) {
+#   add(10, y)
+# }
+# 
+# add_10 = add(10)
+# 
+# # named functions as arguments
+# add_functions = map add [1,2,3]
+# map args(1) add_functions
+# # returns a list of curried functions
+# # => {add(1), add(2), add(3)}
+# 
+# map add(10) [1,2,3]
+# # => {11, 12, 13}
+# 
+# # same thing without currying:
+# map (n) {add(10, n)} [1,2,3]
+# 
+# # map add [[1,1], [2,2], [3,3]]
+# # => {2, 4, 6}
+# # not so sure about this one...should lists be expanded as arguments or passed as a single value?
+# # maybe something like this:
+# # map add(*) [[1,1], [2,2], [3,3]]
+# 
+# # # functions
+# # hello_world: {
+# #   print "Hello, world!"
+# # }
+# #
+# # hello: name, {
+# #   print "Hello, #{name}!"
+# # }
+# # 
+# # hello
+# # hello()
+# 
+# # # classes
+# # Person: class (
+# #   first_name: attr
+# #   last_name: attr
+# #   full_name: {
+# #     [first_name, " ", last_name] join
+# #   }
+# # )
+# 
+# # # objects
+# # jay: new Person
+# 
