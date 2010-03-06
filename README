@@ -1,0 +1,38 @@
+Porkchop is an attempt to create a language with the following properties:
+
+* Strong, dynamic typing
+* Minimal syntax
+* Everything is either a closure or an array of closures
+* Lazy evaluation by default
+* Functions are curried automatically
+* A powerful, elegant object system with nice syntax built entirely on top of the language as a library
+
+
+== Typing
+
+Right now Porkchop uses Ruby's type system.
+
+== Syntax
+
+The language defines syntax for the following concepts:
+
+= Core syntax:
+
+* Closures:  {} and (arg1, arg2) {}
+* Lists:  []
+
+= Shortcut syntax:
+
+* Variable Assignment:
+
+  x: y
+  # shortcut for:
+  set 'x', y
+
+* "Peeking":
+  
+  x.y
+  # short for:
+  peek 'y', x
+  
+Everything else is accomplished with function calls.

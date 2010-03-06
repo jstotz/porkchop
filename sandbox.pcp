@@ -1,0 +1,178 @@
+# crazy ideas...
+
+# no built in class system, only functions
+# variables in a function's local scope can be accessed externally as properties
+# this is how a hash is implemented
+
+# how does that work?
+
+# this block is evaluated immediately and the resulting function is assigned to the variable "point"
+# the point function simply returns itself
+point1: { x: 10; y: -10}
+
+point2: {
+  x: 20
+  y: -20
+}
+
+point3: {}
+point3.x: 30
+point3.x: -30
+
+point4: {}
+point4 {
+  x: 31
+  y: -31
+} 
+
+fac: (n) {
+  (n == 0) ? 0 : n * self(n-1)
+}
+
+fib: (n) {
+  n in (0, 1) ? n : self(n-1) + self(n-2)
+}
+
+point.x
+# => 10
+
+point::data
+# => {x: 10, y: 20}
+
+# functions:
+# There is no special syntax required for defining a named function. You simply assign a function to an name.
+
+hello_world: {
+  print "hello, world."
+}
+
+hello_world
+# => hello, world.
+
+hello: (name) {
+  print "hello, #{name}."
+}
+
+hello 'newman'
+# => hello, newman.
+
+
+person_hash: {
+  name: jay
+  occupation: nerdlinger
+  [prop1, prop2, prop3].each { |name|
+    #{name}: 'dingo'
+  }
+}
+
+
+person_hash[name]
+# => jay
+
+# mixins
+Person += FighterPilot
+
+# functions
+
+# an object is a hash. some of the values of the hash are functions. an object is also a function because everything is a function.
+
+# a class system can be implemented as a function which takes a block,
+# evaluates it in a particular context and, returns a new
+# function/object/datastructure thingy
+ModuleHelpers = {
+  accessors: (names) {
+    names.map (name) { accessor name }
+  }
+  
+  accessor: (name) {
+    setter name
+    getter name 
+  }
+  
+  getter: (name) {
+    #{name}: { @#{name} }
+  }
+  
+  setter: (name) {
+    #{name}=: (value) { @#{name} = value }
+  }
+}
+
+Class = (block) {
+  self << ModuleHelpers
+  block.bind(self)()
+}
+
+Person = Class {
+  accessors: (first_name, last_name, type, state)
+  name: { "#{first_name} #{last_name}" }
+  
+  state: doing_fine
+  
+  piss_off: {
+    state: pissed_off
+  }
+
+  # since functions are closures they have access to variables
+  # in the scope in which they are defined, including function variables
+  one_thing: {
+    another
+  }
+  
+  another: {
+    print "One thing lead to another..."
+  }
+}
+
+# object instantiation
+jay: Person {
+  first_name: 'Jay'
+  last_name: 'Stotz'
+  type: 'Bad Motherfucker'
+}
+
+# calling a method
+# functions are evaluated in the scope of the containing function
+jay.state
+# => doing_fine
+jay.piss_off
+jay.state
+# => pissed_off
+
+jay.one_thing
+# => One thing lead to another...
+
+# accessing metadata uses a special syntax to avoid
+# collisions between domain and internal terminology
+jay::type
+# => Person
+
+jay.type
+# => 'Bad Motherfucker'
+
+newjay: jay::clone {
+  first_name: 'Newjay'
+  last_name: 'Newstotz'
+}
+
+# or 
+
+newjay: jay::clone
+newjay.first_name: 'Newjay'
+newjay.last_name: 'Newstotz'
+
+newjay.name
+# => 'Newjay Newstotz'
+
+jay::type == Person
+# => true
+
+myke: jay::type {
+  # ...
+}
+
+# is equivalent to
+
+myke: Person {
+  # ...
+}

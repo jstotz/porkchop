@@ -1,54 +1,67 @@
 grammar Porkchop
   rule program
-    space statements space
+    space statements space <Program>
   end
   
-  rule end_of_line
-    "\r\n" / "\n" / "\r"
+  rule eol
+    "\r\n" / "\n" / "\r" / eof
   end
-  
+
+  rule eof
+    !.
+  end
+    
   rule statements
     statement+
   end
   
   rule statement
-    expression end_of_line space
+    space expression (eol / ';') space <Statement>
   end
   
-  rule definition
-    identifier space ':' space expression
-  end
-    
   rule expression
-    definition / string / number / table / list / function_call
-  end
-  
-  rule identifier
-    [a-z_]+
-  end
-  
-  rule number
-    [\d]+
-  end
-    
-  rule list
-    '(' (expression ','? space)+ ')'
+    assignment / block / string / number / list / function_call
   end
 
-  rule table
-    '(' (space definition (end_of_line / ','? space))+ ')'
+  rule assignment
+    name space assignment_operator space expression <Assignment>
+  end
+  
+  rule name
+    [a-z_0-9+]+ <Name>
+  end  
+  
+  rule list
+    '[' list_elements:(value:(expression / name) ','? space)+ ']' <List>
   end
   
   rule block
-    '{' statements '}'
+    list? space '{' program '}' <Block>
   end
   
   rule function_call
-    identifier space list? block?
+    name space arguments:(list / function_call) <FunctionCall>
   end
 
   rule assignment_operator
     ':'
+  end
+
+  rule comment
+    '#' (!eol .)* <Comment>
+  end
+
+  # primitives
+  rule number
+    real_number / integer_number
+  end
+
+  rule integer_number
+    '-'? ([1-9] [0-9]* / '0') <Integer>
+  end
+
+  rule real_number
+    '-'? [0-9]* '.' [0-9]* <RealNumber>
   end
 
   rule string
@@ -56,33 +69,13 @@ grammar Porkchop
   end
 
   rule double_quoted_string
-    '"' string:(!'"' ("\\\\" / '\"' / .))* '"' {
-      def eval(env = Environment.new)
-        string.text_value
-      end
-    }
+    '"' string:(!'"' ("\\\\" / '\"' / .))* '"' <String>
   end
 
   rule single_quoted_string
-    "'" string:(!"'" ("\\\\" / "\\'" / .))* "'" {
-      def eval(env = Environment.new)
-        string.text_value
-      end
-    }
-  end
-  
-  rule comment
-    comment_to_eol / multiline_comment
+    "'" string:(!"'" ("\\\\" / "\\'" / .))* "'" <String>
   end
 
-  rule multiline_comment
-  '/*' (!'*/' . )* '*/'
-  end
-
-  rule comment_to_eol
-    '#' (!"\n" .)*
-  end
-  
   # whitespace
   rule white 
     [ \r\t\n]+
