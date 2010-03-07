@@ -53,7 +53,9 @@ porcupine: {
 # TODO: this doesn't work yet:
 # porcupine.stamina: 30
 
-print + map [@to_string [porcupine.name "(" porcupine.stamina "): " porcupine.special_move " rules!" "dude"]]
+porcupine.attack
+
+print + map [@to_string [porcupine.name "(" porcupine.stamina "): " porcupine.special_move]]
 
 # porcupine.name
 # => "Pancake"
