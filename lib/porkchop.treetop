@@ -26,13 +26,17 @@ grammar Porkchop
   rule assignment
     name space assignment_operator space expression <Assignment>
   end
-  
+    
   rule name
-    [a-z_0-9+]+ <Name>
-  end  
+    [a-z_0-9+\.]+ <Name>
+  end
   
+  rule symbol
+    '@' name <Symbol>
+  end
+      
   rule list
-    '[' list_elements:(value:(expression / name) ','? space)+ ']' <List>
+    '[' list_elements:(value:(expression / name / symbol) ','? space)+ ']' <List>
   end
   
   rule block

@@ -1,29 +1,28 @@
 class Porkchop::Scope < Hash
+  attr_accessor :parent
+  
+  def initialize(parent=nil)
+    self.parent = parent
+  end
+  
   def [](name)
-    key = name_to_key(name)
-    fetch(key)
-  rescue KeyError
-    raise InvalidName, "Name '#{key}' not in scope."
-  end
-  
-  def []=(name, value)
-    key = name_to_key(name)
-    super(key, value)
-  end
-  
-  def define(name, &block)
-    self[name] = block
-  end
-  
-  private
-  
-  def name_to_key(name)
-    if name.is_a? Porkchop::Name
-      name.text_value
+    name = name.to_s
+    if has_key? name
+      super(name)
+    elsif parent
+      parent[name]
     else
-      name.to_s
+      raise InvalidName, "Name '#{name.to_s}' not in scope."
     end
   end
   
+  def []=(name, value)
+    super(name.to_s, value)
+  end
+  
+  def new_child
+    self.class.new(self)
+  end
+    
   class InvalidName < RuntimeError; end
 end

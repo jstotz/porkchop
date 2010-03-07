@@ -42,11 +42,18 @@ place: {
 # a "method" is simply a local variable whose value is a function
 porcupine: {
   name: "Pancake"
+  power: 10
+  stamina: 20
   special_move: "quill attack"
   attack: {
-    print "#{name} deploys #{special_move}!"
+    print ["#{name} deploys #{special_move}!"]
   }
 }
+
+# TODO: this doesn't work yet:
+# porcupine.stamina: 30
+
+print + map [@to_string [porcupine.name "(" porcupine.stamina "): " porcupine.special_move " rules!" "dude"]]
 
 # porcupine.name
 # => "Pancake"

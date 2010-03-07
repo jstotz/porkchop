@@ -1,7 +1,6 @@
-class Porkchop::Block < Porkchop::Node
-  attr_accessor :scope, :proc
-  
+class Porkchop::Block < Porkchop::Node    
   def eval(scope)
-    proc.call
+    @scope = scope.new_child
+    program.eval(@scope)
   end
 end
