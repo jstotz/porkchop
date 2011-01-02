@@ -1,8 +1,16 @@
 class Porkchop::FunctionCall < Porkchop::Node
   def eval(scope)
-    function = scope[name]
-    argument_values = arguments.eval(scope)
-    $log.debug "Calling function #{name.inspect} with args #{argument_values.inspect}"
-    function.call(*argument_values)
+    function = identifier.eval(scope)
+    if arguments
+      $log.debug "Calling function #{identifier.inspect} with arguments #{arguments.inspect}"
+      function.call(scope, arguments)
+    else
+      $log.debug "Calling function #{identifier.inspect} with no arguments"
+      function.call(scope)
+    end
+  end
+  
+  def inspect
+    "FunctionCall: #{identifier.inspect} with args #{arguments.inspect}"
   end
 end

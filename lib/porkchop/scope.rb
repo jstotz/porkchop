@@ -12,7 +12,7 @@ class Porkchop::Scope < Hash
     elsif parent
       parent[name]
     else
-      raise InvalidName, "Name '#{name.to_s}' not in scope."
+      raise InvalidIdentifier, "Identifier '#{name.to_s}' not in scope."
     end
   end
   
@@ -24,5 +24,5 @@ class Porkchop::Scope < Hash
     self.class.new(self)
   end
     
-  class InvalidName < RuntimeError; end
+  class InvalidIdentifier < RuntimeError; end
 end

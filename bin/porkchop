@@ -1,4 +1,4 @@
-#!/usr/local/bin/ruby19
+#!/usr/bin/env ruby
 require File.join(File.dirname(__FILE__), '..', 'lib', 'interpreter')
 
 source_code = ARGF.read

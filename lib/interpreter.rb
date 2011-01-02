@@ -1,6 +1,6 @@
 $LOAD_PATH << File.dirname(__FILE__)
-
-require 'rubygems'
+require "rubygems"
+require "bundler/setup"
 require 'treetop'
 require 'core'
 require 'ruby-debug'

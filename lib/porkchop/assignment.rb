@@ -1,5 +1,5 @@
 class Porkchop::Assignment < Porkchop::Node
   def eval(scope)
-    scope[name] = expression
+    scope[identifier] = expression
   end
 end
